@@ -13,6 +13,7 @@ from .animation_models import TransitionDefinition, TransitionItem
 from .bridge_client import BridgeClient
 from .editor_launcher import EditorLauncher
 from .project_locator import ProjectLocator
+from ..tools import package_tools, component_tools
 
 mcp = FastMCP(
     "FairyGUI Agent Bridge",
@@ -631,6 +632,12 @@ def fgui_discard_document() -> dict[str, Any]:
     return _client.call("discard_document")
 
 
+def register_additional_tools() -> None:
+    """注册从 FairyGUI-MCP 移植的额外工具"""
+    package_tools.register(mcp, _client)
+    component_tools.register(mcp, _client)
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=f"FairyGUI Agent Bridge MCP {__version__}")
     parser.add_argument("--project", help=".fairy 文件、FairyGUI 工程目录或仓库目录")
@@ -642,6 +649,7 @@ def build_parser() -> argparse.ArgumentParser:
 def main() -> None:
     args = build_parser().parse_args()
     configure_runtime(project=args.project, editor=args.editor, timeout=args.timeout)
+    register_additional_tools()
     mcp.run(transport="stdio")
 
 
