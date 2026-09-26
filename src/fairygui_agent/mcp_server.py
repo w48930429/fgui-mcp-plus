@@ -13,7 +13,7 @@ from .animation_models import TransitionDefinition, TransitionItem
 from .bridge_client import BridgeClient
 from .editor_launcher import EditorLauncher
 from .project_locator import ProjectLocator
-from ..tools import package_tools, component_tools
+from .tools import package_tools, component_tools
 
 mcp = FastMCP(
     "FairyGUI Agent Bridge",
